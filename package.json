@@ -1,5 +1,5 @@
 {
-  "name": "raml-to-test",
+  "name": "raml2test",
   "version": "0.0.1",
   "description": "",
   "bin": "bin/raml2test",
