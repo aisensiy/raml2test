@@ -17,6 +17,11 @@
   "devDependencies": {
     "babel-cli": "^6.10.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aisensiy/raml2test.git"
+  },
+  "homepage": "https://github.com/aisensiy/raml2test",
   "scripts": {
     "build": "./node_modules/.bin/babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1",
