@@ -1,0 +1,371 @@
+#%RAML 0.8
+
+title: Order System API
+mediaType: application/json
+
+/products:
+  get:
+    description: As a customer I can get all the products then I can get products to buy.
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "uri": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["uri", "id", "name", "description", "price"]
+                }
+              }
+            example: |
+              [
+                {
+                  "uri": "/products/1",
+                  "name": "apple",
+                  "description": "red apple",
+                  "price": 1.1
+                }
+              ]
+  post:
+    description: As a admin I can create a product so that customer can buy the product
+    body:
+      application/json:
+        example: |
+          {
+            "name": "xxx",
+            "description": "xxx",
+            "price": 1.2
+          }
+    responses:
+      201:
+        headers:
+          Location:
+            description: "created production uri"
+            type: string
+  /{productId}:
+    get:
+      description: As a customer I can view the product detail so that I can decide whether to buy the product or not.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "uri": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "required": ["id", "uri", "name", "description", "price"]
+                  }
+                }
+              example: |
+                {
+                  "uri": "/products/1",
+                  "name": "apple",
+                  "description": "red apple",
+                  "price": 1.1
+                }
+/users:
+  post:
+    description: register a new customer
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9]+$"
+              }
+            },
+            "required": ["name"]
+          }
+        example: |
+          {
+            "name": "scxu"
+          }
+    responses:
+      201:
+        description: create success
+        headers:
+          Location:
+            description: "created user uri"
+            type: string
+  /{id}:
+    /orders:
+      post:
+        description: As a customer I can create an order to buy some product
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "order_items": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "product_id": {
+                          "type": "number"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": ["product_id", "quantity"]
+                    }
+                  },
+                  "required": ["name", "address", "phone", "order_items"]
+                }
+              }
+            example: |
+              {
+                "name": "kayla",
+                "address": "beijing"
+                "phone": "13200000000",
+                "order_items": [
+                  {
+                    "product_id": "1",
+                    "quantity": 2
+                  }
+                ]
+              }
+        responses:
+          201:
+            headers:
+              Location:
+                description: "created order uri"
+                type: string
+            body:
+      get:
+        description: As a customer I can review the orders so that I can know when and how much I have spend
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "$schema": "http://json-schema.org/draft-04/schema#",
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "integer"
+                      },
+                      "price": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "uri": {
+                        "type": "string"
+                      },
+                      "required": ["uri", "name", "address", "phone", "total_price", "created_at"]
+                    }
+                  }
+                example: |
+                  [
+                    {
+                      "uri": "/users/1/orders/1",
+                      "name": "kayla",
+                      "address": "beijing"
+                      "phone": "13912344321"
+                      "total_price": 100,
+                      "created_at": 1468212301
+                    }
+                  ]
+
+      /{orderId}:
+        get:
+          description: As a customer I can view the order detail so that I can know what product I have bought.
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "$schema": "http://json-schema.org/draft-04/schema#",
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "uri": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "total_price": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "created_at": {
+                          "type": "integer"
+                        },
+                        "order_items": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "uri": {
+                                "type": "string"
+                              },
+                              "product_id": {
+                                "type": "number"
+                              },
+                              "quantity": {
+                                "type": "number"
+                              },
+                              "amount": {
+                                "description": "price for single item",
+                                "type": "number"
+                              }
+                            },
+                            "required": ["uri", "product_id", "quantity", "amount"]
+                          }
+                        },
+                        "required": ["name", "address", "phone", "price", "order_items", "uri", "created_at"]
+                      }
+                    }
+                  example: |
+                    {
+                      "uri": "/users/1/orders/1",
+                      "name": "kayla",
+                      "address": "beijing",
+                      "phone": "13912344321"
+                      "total_price": 100,
+                      "created_at": 1468212301
+                      "order_items": [
+                        {
+                          "product_id": 1,
+                          "quantity": 2,
+                          "amount": 100
+                        }
+                      ]
+                    }
+        /payment:
+          post:
+            description: As a customer I can pay for my order so that I can receive the product.
+            body:
+              application/json:
+                schema: |
+                  {
+                    "$schema": "http://json-schema.org/draft-04/schema#",
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "pay_type": {
+                        "enum": ["CASH", "CREDIT_CARD"]
+                      },
+                      "required": ["amount", "pay_type"]
+                    }
+                  }
+                example: |
+                  {
+                    "pay_type": "CASH",
+                    "amount": 100
+                  }
+            responses:
+              200:
+          get:
+             description: As a customer I can view the payment of the order to know whether I have payed for the order
+             responses:
+               200:
+                 body:
+                   application/json:
+                     schema: |
+                       {
+                         "$schema": "http://json-schema.org/draft-04/schema#",
+                         "type": "object",
+                         "properties": {
+                           "order_uri": {
+                             "type": "string"
+                           },
+                           "uri": {
+                             "type": "string"
+                           },
+                           "pay_type": {
+                             "enum": ["CASH", "CREDIT_CARD"]
+                           },
+                           "amount": {
+                             "type": "number"
+                           },
+                           "total_price": {
+                             "type": "number",
+                             "minimum": 0
+                           },
+                           "created_at": {
+                             "type": "date"
+                           },
+                           "required": ["order_uri", "uri", "pay_type", "amount", "created_at"]
+                         }
+                       }
+                     example: |
+                       {
+                         "order_uri": "/users/1/orders/1",
+                         "uri": "/users/1/orders/1/payment"
+                         "pay_type": "CASH",
+                         "amount": 100,
+                         "created_at": "2014-01-01"
+                       }

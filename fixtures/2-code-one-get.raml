@@ -1,0 +1,24 @@
+#%RAML 0.8
+
+title: World Music API
+baseUri: http://example.api.com/{version}
+version: v1
+
+/stacks:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": true
+              }
+      404:

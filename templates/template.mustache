@@ -1,0 +1,43 @@
+//
+// Generated from RAML specification
+// <https://github.com/aisensiy/raml2test>
+//
+
+var request = require('request');
+var chai = require('chai');
+var assert = chai.assert;
+var tv4 = require('tv4');
+
+describe("Test", function() {
+  {{#tests}}
+  it("{{{name}}}", function (done) {
+    var options = {
+      url: '{{{request.url}}}',
+      method: '{{request.method}}',
+      qs: {{request.query}},
+      body: {{{request.body}}},
+      header: {{{request.headers}}}
+    };
+
+    request(options, function(error, response, body) {
+      assert.isNull(error);
+      assert.isNotNull(response, 'Response');
+      assert.equal(response.statusCode, {{response.status}}, "Expect {{response.status}}, got " + response.statusCode);
+      var schema = {{{response.schema}}};
+      if (schema != '') {
+        // verify response body
+        body = (body == '' ? '[empty]' : body);
+        assert.doesNotThrow(function() {
+          JSON.parse(body);
+        }, JSON.SyntaxError, "Invalid JSON: " + body);
+        var json = JSON.parse(body);
+        var result = tv4.validateResult(json, schema);
+        assert.lengthOf(result.missing, 0, "Missing/unresolved JSON schema $refs (" + result.missing && result.missing.join(', ') + ") in schema: " + JSON.stringify(schema, null, 4) + " Error");
+        assert.ok(result.valid, "Got unexpected response body: " + result.error && result.error.message + " " + JSON.stringify(schema, null, 4) + " Error");
+      }
+      done();
+    });
+  });
+
+  {{/tests}}
+});
