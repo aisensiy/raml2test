@@ -15,15 +15,6 @@ function run(source, template, options, cb) {
   });
 
   function generateTest(ramlObj, options, template, tests) {
-    var server = options.server || ramlObj.baseUri;
-    if (!server) {
-      throw new Error('no api endpoint');
-    }
-
-    tests.forEach(function (test) {
-      test.request.server = server;
-    });
-
     fs.readFile(template, function (err, data) {
       if (err) throw err;
 

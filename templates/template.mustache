@@ -7,12 +7,13 @@ var request = require('request');
 var chai = require('chai');
 var assert = chai.assert;
 var tv4 = require('tv4');
+var endpoint = process.env.ENDPOINT;
 
 describe("Test", function() {
   {{#tests}}
   it("{{{name}}}", function (done) {
     var options = {
-      url: '{{{request.url}}}',
+      url: endpoint + '{{{request.path}}}',
       method: '{{request.method}}',
       qs: {{request.query}},
       body: {{{request.body}}},

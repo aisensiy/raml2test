@@ -7,9 +7,8 @@ var fs = require('fs');
 
 
 program
-    .version('0.0.1')
-    .usage("<raml> [options]")
-    .option('-s, --server <server>', 'Api Endpoint')
+    .version('0.0.2')
+    .usage("<raml> -d <output js file>")
     .option('-d, --dest <dest>', 'Create Test File')
     .action(function (raml, options) {
       if (!options.dest) {
@@ -19,7 +18,6 @@ program
       var package = path.join(__dirname, '../templates/package.json');
       fs.createReadStream(package).pipe(fs.createWriteStream('package.json'));
       raml2test(raml, template, {
-        server: options.server
       }, function (result) {
         fs.writeFile(options.dest, result, function(err) {
           if (err) {
