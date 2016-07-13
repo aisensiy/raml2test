@@ -3,19 +3,29 @@
 var raml2test = require('../src/raml2test');
 var program = require('commander');
 var path = require('path');
+var fs = require('fs');
 
 
 program
     .version('0.0.1')
-    .usage("<raml> [server]")
-    .option('-s, --server', 'Api Endpoint')
-    .action(function (raml, server) {
+    .usage("<raml> [options]")
+    .option('-s, --server <server>', 'Api Endpoint')
+    .option('-d, --dest <dest>', 'Create Test File')
+    .action(function (raml, options) {
+      if (!options.dest) {
+        throw new Error("Dest File Must Be Given");
+      }
       var template = path.join(__dirname, '../templates/template.mustache');
-
+      var package = path.join(__dirname, '../templates/package.json');
+      fs.createReadStream(package).pipe(fs.createWriteStream('package.json'));
       raml2test(raml, template, {
-        server: server
+        server: options.server
       }, function (result) {
-        console.log(result);
+        fs.writeFile(options.dest, result, function(err) {
+          if (err) {
+            throw err;
+          }
+        })
       });
     });
 
