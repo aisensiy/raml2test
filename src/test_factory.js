@@ -29,7 +29,7 @@ class Test {
 
     result.request.url = this.url();
     result.request.query = JSON.stringify(this.request.query, null, 2);
-    result.request.body = this.requestBody();
+    result.request.body = this.request.body || "",
     result.request.headers = this.requestHeaders();
     result.response.schema = JSON.stringify(this.response.schema || '', null, 2);
 
@@ -38,10 +38,6 @@ class Test {
 
   requestHeaders() {
     return JSON.stringify(this.request.headers);
-  }
-
-  requestBody() {
-    return JSON.stringify(this.request.body, null, 2);
   }
 
   url() {
