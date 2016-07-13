@@ -1,10 +1,6 @@
 'use strict';
 
-var raml2obj = require('raml2obj');
 var testFactory = require('./test_factory');
-var fs = require('fs');
-var beautify = require('js-beautify').js_beautify;
-var Mustache = require('mustache');
 
 function parseHeaders(raml) {
   if (!raml) return {};
@@ -79,43 +75,4 @@ function addTests(raml, parent, tests) {
   });
 }
 
-// source can either be a filename, url, file contents (string) or parsed RAML object.
-// Returns a promise.
-var source = 'fixtures/order.raml';
-var tests = [];
-var template = 'templates /template.mustache';
-
-var options = {
-  server: 'http://localhost:8088'
-};
-
-raml2obj.parse(source).then(function (ramlObj) {
-  addTests(ramlObj, null, tests);
-  generateTest(ramlObj, options, template, tests);
-}).catch(function (err) {
-  console.warn('error in parse');
-  console.warn(err);
-});
-
-function generateTest(ramlObj, options, template, tests) {
-  var server = options.server || ramlObj.baseUri;
-  if (!server) {
-    throw new Error('no api endpoint');
-  }
-
-  tests.forEach(function (test) {
-    test.request.server = server;
-  });
-
-  fs.readFile(template, function (err, data) {
-    if (err) throw err;
-
-    var output = Mustache.render(data.toString(), {
-      tests: tests.map(function (e) {
-        return e.viewModel();
-      })
-    });
-
-    console.log(beautify(output, {indent_size: 2}));
-  });
-}
+module.exports = addTests;

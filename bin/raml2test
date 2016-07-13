@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+var raml2test = require('../src/raml2test');
+var program = require('commander');
+var path = require('path');
+
+
+program
+    .version('0.0.1')
+    .usage("<raml> [server]")
+    .option('-s, --server', 'Api Endpoint')
+    .action(function (raml, server) {
+      var template = path.join(__dirname, '../templates/template.mustache');
+
+      raml2test(raml, template, {
+        server: server
+      }, function (result) {
+        console.log(result);
+      });
+    });
+
+program.parse(process.argv);

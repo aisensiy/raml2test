@@ -1,11 +1,12 @@
 {
   "name": "raml-to-test",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "hooks.js",
+  "bin": "bin/raml2test",
   "dependencies": {
     "babel": "^6.5.2",
     "chai": "^3.5.0",
+    "commander": "^2.9.0",
     "js-beautify": "^1.6.3",
     "mustache": "^2.2.1",
     "raml2obj": "^2.2.0",
