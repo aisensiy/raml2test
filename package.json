@@ -1,6 +1,6 @@
 {
   "name": "raml2test",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "bin": "bin/raml2test",
   "dependencies": {
@@ -8,6 +8,7 @@
     "chai": "^3.5.0",
     "commander": "^2.9.0",
     "js-beautify": "^1.6.3",
+    "mocha": "^2.5.3",
     "mustache": "^2.2.1",
     "raml2obj": "^2.2.0",
     "request": "^2.73.0",
@@ -21,6 +22,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "./node_modules/.bin/babel src -d lib -w"
   },
-  "author": "",
+  "author": "aisensiy",
   "license": "ISC"
 }
