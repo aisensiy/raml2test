@@ -40,6 +40,7 @@ mediaType: application/json
             example: |
               [
                 {
+                  "id": "1",
                   "uri": "/products/1",
                   "name": "apple",
                   "description": "red apple",
@@ -121,9 +122,6 @@ mediaType: application/json
           {
             "name": "scxu"
           }
-    headers:
-      X-Tracking:
-        example: xxx-xxx
     responses:
       201:
         description: create success
@@ -172,7 +170,7 @@ mediaType: application/json
             example: |
               {
                 "name": "kayla",
-                "address": "beijing"
+                "address": "beijing",
                 "phone": "13200000000",
                 "order_items": [
                   {
@@ -269,10 +267,11 @@ mediaType: application/json
                           "items": {
                             "properties": {
                               "uri": {
+                                "description": "product uri",
                                 "type": "string"
                               },
                               "product_id": {
-                                "type": "number"
+                                "type": "string"
                               },
                               "quantity": {
                                 "type": "number"
@@ -298,7 +297,7 @@ mediaType: application/json
                       "created_at": 1468212301
                       "order_items": [
                         {
-                          "product_id": 1,
+                          "product_id": "asfx-aasdfas",
                           "quantity": 2,
                           "amount": 100
                         }
@@ -330,7 +329,7 @@ mediaType: application/json
                     "amount": 100
                   }
             responses:
-              200:
+              201:
           get:
              description: As a customer I can view the payment of the order to know whether I have payed for the order
              responses:
@@ -359,7 +358,7 @@ mediaType: application/json
                              "minimum": 0
                            },
                            "created_at": {
-                             "type": "date"
+                             "type": "number"
                            },
                            "required": ["order_uri", "uri", "pay_type", "amount", "created_at"]
                          }
@@ -370,5 +369,5 @@ mediaType: application/json
                          "uri": "/users/1/orders/1/payment"
                          "pay_type": "CASH",
                          "amount": 100,
-                         "created_at": "2014-01-01"
+                         "created_at": 12313129000
                        }

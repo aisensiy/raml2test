@@ -16,7 +16,7 @@ describe("Test", function() {
       url: endpoint + '{{{request.path}}}',
       method: '{{request.method}}',
       qs: {{request.query}},
-      body: {{{request.body}}},
+      json: {{{request.body}}},
       header: {{{request.headers}}}
     };
 
@@ -33,8 +33,8 @@ describe("Test", function() {
         }, JSON.SyntaxError, "Invalid JSON: " + body);
         var json = JSON.parse(body);
         var result = tv4.validateResult(json, schema);
-        assert.lengthOf(result.missing, 0, "Missing/unresolved JSON schema $refs (" + result.missing && result.missing.join(', ') + ") in schema: " + JSON.stringify(schema, null, 4) + " Error");
-        assert.ok(result.valid, "Got unexpected response body: " + result.error && result.error.message + " " + JSON.stringify(schema, null, 4) + " Error");
+        assert.lengthOf(result.missing, 0, "Missing/unresolved JSON schema $refs (" + result.missing && result.missing.join(', ') + ") in schema: " + JSON.stringify(schema, null, 2) + " Error");
+        assert.ok(result.valid, "Got unexpected response body: " + (result.error && result.error.message) + " " + JSON.stringify(schema, null, 2) + " Error");
       }
       done();
     });
