@@ -4,7 +4,7 @@
 
 ```
 npm install -g raml2html
-raml2html raml/path -d output.js
+raml2test raml/path -d output.js
 ```
 
 And then just edit the `output.js` to do what you want for real mocha api test.
